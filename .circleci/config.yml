@@ -3,8 +3,22 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-jobs:
+
+workflows:
+  version: 2
   build:
+    jobs:
+      - build_and_test
+      - deploy_to_staging:
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              only:
+                - master
+
+jobs:
+  build_and_test:
     docker:
       # specify the version you desire here
       - image: circleci/node:10.15.1
@@ -28,3 +42,19 @@ jobs:
 
       # run tests!
       - run: yarn test
+
+      - run: yarn build
+
+      - persist_to_workspace:
+          root: ~/
+          paths: .
+
+  deploy_to_staging:
+    docker:
+      - image: circleci/node:10.15.1
+
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - run: npx surge build/ https://https://rupert-ci-cd-staging.surge.sh
