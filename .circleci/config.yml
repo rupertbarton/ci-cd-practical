@@ -66,8 +66,6 @@ jobs:
       - attach_workspace:
           at: ~/
 
-      - run: ls
-
       - run: npx surge build/ https://rupert-ci-cd-staging.surge.sh
 
       - persist_to_workspace:
@@ -84,6 +82,4 @@ jobs:
       - attach_workspace:
           at: ~/
 
-      - run: ls
-
-      - run: npx surge build/ https://rupert-ci-cd-staging.surge.sh
+      - run: yarn e2e
