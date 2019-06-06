@@ -87,7 +87,7 @@ jobs:
 
       - run: yarn e2e
 
-   run_performance_tests:
+  run_performance_tests:
     docker:
       - image: circleci/node:10.15.1-jessie-browsers
 
