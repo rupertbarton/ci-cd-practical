@@ -38,7 +38,7 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy_to_staging:
+      - deploy_to_production:
           requires:
             - hold_production_deploy
           filters:
