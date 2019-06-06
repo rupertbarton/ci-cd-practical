@@ -30,6 +30,14 @@ workflows:
             branches:
               only:
                 - master
+      - hold_production_deploy:
+          type: approval
+          requires:
+            - run_performance_tests
+            - run_e2e_tests
+          filters:
+            branches:
+              only: master
 
 jobs:
   build_and_test:
@@ -107,3 +115,16 @@ jobs:
             cp *.report.* /tmp/perf_results
       - store_artifacts:
           path: /tmp/perf_results
+
+  # hold_production_deploy:
+  #   docker:
+  #     - image: circleci/node:10.15.1
+
+  #   working_directory: ~/repo
+
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/
+
+  #     - run: npx surge build/ https://rupert-ci-cd-staging.surge.sh
+          
