@@ -14,7 +14,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "e2e": "cross-env JEST_JUNIT_OUTPUT=\"./test-results/acceptance/results.xml\" cross-env BASE_URL=\"'https://rupert-ci-cd-staging.surge.sh'\" jest -c e2e/jestConfig.json --runInBand"
+    "e2e": "cross-env JEST_JUNIT_OUTPUT=\"./test-results/acceptance/results.xml\" cross-env BASE_URL=\"'https://rupert-ci-cd-staging.surge.sh'\" jest -c e2e/jestConfig.json --runInBand",
+    "performance": "lighthouse https://rupert-ci-cd-staging.surge.sh --chrome-flags=\"--headless\" --output json --output html --output-path=./ci-cd-practical && node ./scripts/verify-performance-results.js ci-cd-practical.report.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -34,6 +35,7 @@
   "devDependencies": {
     "cross-env": "5.2.0",
     "jest-junit": "6.4.0",
+    "lighthouse": "5.1.0",
     "puppeteer": "1.17.0"
   }
 }
