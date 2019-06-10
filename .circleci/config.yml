@@ -80,8 +80,8 @@ jobs:
       - run: yarn test
 
       - run: | 
-          ls -at
           yarn build
+          ls -at
 
       - persist_to_workspace:
           root: ~/build
