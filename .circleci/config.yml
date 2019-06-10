@@ -79,7 +79,9 @@ jobs:
       # run tests!
       - run: yarn test
 
-      - run: yarn build
+      - run: | 
+          ls -at
+          yarn build
 
       - persist_to_workspace:
           root: ~/build
