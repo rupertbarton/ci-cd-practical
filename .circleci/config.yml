@@ -140,7 +140,10 @@ jobs:
       - attach_workspace:
           at: ~/
 
-      - run: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./build/
+      - run: |
+          go get -u github.com/stevenmatthewt/semantics
+          tag = $(semantics --output-tag)
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${tag} ./build/
 
 
   deploy_to_production:
