@@ -145,13 +145,7 @@ jobs:
 
       - run: |
           go get -u github.com/stevenmatthewt/semantics
-          $tag=$(semantics --output-tag)
-          echo $tag
-          if [ "$tag" ]; then
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${tag} ./build/
-          else
-            echo "The commit message(s) did not indicate a major/minor/patch version."
-          fi
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(semantics --output-tag) ./build/
 
 
   deploy_to_production:
