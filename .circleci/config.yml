@@ -38,6 +38,13 @@ workflows:
           filters:
             branches:
               only: master
+      - publish_github_release:
+          requires:
+            - hold_production_deploy
+          filters:
+            branches:
+              only:
+                - master
       - deploy_to_production:
           requires:
             - hold_production_deploy
@@ -75,7 +82,7 @@ jobs:
       - run: yarn build
 
       - persist_to_workspace:
-          root: ~/
+          root: ~/build
           paths: .
 
   deploy_to_staging:
@@ -86,7 +93,7 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/build
 
       - run: npx surge build/ https://rupert-ci-cd-staging.surge.sh
 
@@ -122,6 +129,19 @@ jobs:
             cp *.report.* /tmp/perf_results
       - store_artifacts:
           path: /tmp/perf_results
+
+  publish_github_release:
+    docker:
+      - image: circleci/node:10.15.1
+
+    working_directory: ~/repo
+
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - run: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./build/
+
 
   deploy_to_production:
     docker:
