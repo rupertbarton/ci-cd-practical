@@ -134,6 +134,7 @@ jobs:
   publish_github_release:
     docker:
       - image: circleci/golang:1.9
+      - image: cibuilds/github:0.10
 
     working_directory: ~/repo
 
