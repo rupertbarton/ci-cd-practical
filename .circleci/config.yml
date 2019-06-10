@@ -134,7 +134,6 @@ jobs:
   publish_github_release:
     docker:
       - image: circleci/golang:1.9
-      - image: cibuilds/github:0.10
 
     working_directory: ~/repo
 
@@ -145,6 +144,7 @@ jobs:
       - add_ssh_keys
 
       - run: |
+          go get -u github.com/tcnksm/ghr
           go get -u github.com/stevenmatthewt/semantics
           ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(semantics --output-tag) ./build/
 
