@@ -143,8 +143,9 @@ jobs:
       - add_ssh_keys
 
       - run: |
-          # go get -u github.com/stevenmatthewt/semantics
+          go get -u github.com/stevenmatthewt/semantics
           tag=$(semantics --output-tag)
+          echo $tag
           if [ "$tag" ]; then
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${tag} ./build/
           else
