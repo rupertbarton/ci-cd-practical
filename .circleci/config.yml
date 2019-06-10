@@ -35,9 +35,9 @@ workflows:
       #     requires:
       #       - run_performance_tests
       #       - run_e2e_tests
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
       - publish_github_release:
           requires:
             # - hold_production_deploy
