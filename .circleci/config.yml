@@ -144,7 +144,7 @@ jobs:
 
       - run: |
           go get -u github.com/stevenmatthewt/semantics
-          tag = $(semantics --output-tag)
+          tag=$(semantics --output-tag)
           if [ "$tag" ]; then
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${tag} ./build/
           else
