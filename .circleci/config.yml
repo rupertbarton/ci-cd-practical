@@ -84,7 +84,7 @@ jobs:
       - run: ls -at
 
       - persist_to_workspace:
-          root: ~/
+          root: ~/repo/
           paths: ./build/
 
   deploy_to_staging:
