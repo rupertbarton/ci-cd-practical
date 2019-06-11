@@ -144,10 +144,12 @@ jobs:
 
       - run: |
           ls -at
+          cd ..
+          ls -at
           go get -u github.com/tcnksm/ghr
           git config user.email "rbarton@scottlogic.com"
           git config user.name "rupertbarton"
-          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(npm version minor -m "Updated version number [ci skip]") .
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(npm version minor -m "Updated version number [ci skip]") 
           git push
 
 
