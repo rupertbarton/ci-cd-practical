@@ -81,6 +81,8 @@ jobs:
 
       - run: yarn build
 
+      - run: ls -at
+
       - persist_to_workspace:
           root: ~/
           paths: ./build/
