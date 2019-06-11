@@ -145,7 +145,7 @@ jobs:
           go get -u github.com/tcnksm/ghr
           git config user.email "rbarton@scottlogic.com"
           git config user.name "rupertbarton"
-          NEW_VERSION_NUMBER=npm version patch
+          NEW_VERSION_NUMBER=eval $(npm version patch)
           ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(NEW_VERSION_NUMBER) ./build/
 
 
