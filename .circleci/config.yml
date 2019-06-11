@@ -133,7 +133,7 @@ jobs:
 
   publish_github_release:
     docker:
-      - image: cibuilds/github:0.10
+      - image: circleci/golang:1.9.7-node
 
     working_directory: ~/repo
 
