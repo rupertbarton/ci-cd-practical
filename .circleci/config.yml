@@ -9,49 +9,49 @@ workflows:
   build:
     jobs:
       - build_and_test
-      # - deploy_to_staging:
-      #     requires:
-      #       - build_and_test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      # - run_e2e_tests:
-      #     requires:
-      #       - deploy_to_staging
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      # - run_performance_tests:
-      #     requires:
-      #       - deploy_to_staging
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      # - hold_production_deploy:
-      #     type: approval
-      #     requires:
-      #       - run_performance_tests
-      #       - run_e2e_tests
-      #     filters:
-      #       branches:
-      #         only: master
-      - publish_github_release:
+      - deploy_to_staging:
           requires:
             - build_and_test
           filters:
             branches:
               only:
                 - master
-      # - deploy_to_production:
-      #     requires:
-      #       - hold_production_deploy
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+      - run_e2e_tests:
+          requires:
+            - deploy_to_staging
+          filters:
+            branches:
+              only:
+                - master
+      - run_performance_tests:
+          requires:
+            - deploy_to_staging
+          filters:
+            branches:
+              only:
+                - master
+      - hold_production_deploy:
+          type: approval
+          requires:
+            - run_performance_tests
+            - run_e2e_tests
+          filters:
+            branches:
+              only: master
+      - publish_github_release:
+          requires:
+            - hold_production_deploy
+          filters:
+            branches:
+              only:
+                - master
+      - deploy_to_production:
+          requires:
+            - hold_production_deploy
+          filters:
+            branches:
+              only:
+                - master
 
 jobs:
   build_and_test:
@@ -81,11 +81,9 @@ jobs:
 
       - run: yarn build
 
-      - run: ls -at
-
       - persist_to_workspace:
-          root: ~/repo/
-          paths: ./build/
+          root: ~/
+          paths: .
 
   deploy_to_staging:
     docker:
@@ -143,16 +141,12 @@ jobs:
           at: ~/
 
       - run: |
-          ls -at
-          cd ..
-          ls -at
           go get -u github.com/tcnksm/ghr
           git config user.email "rbarton@scottlogic.com"
           git config user.name "rupertbarton"
-          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(npm version minor -m "Updated version number [ci skip]") 
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(npm version minor -m "Updated version number [ci skip]") ./build/
           git push
-
-
+          
   deploy_to_production:
     docker:
       - image: circleci/node:10.15.1
